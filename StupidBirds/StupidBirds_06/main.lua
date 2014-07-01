@@ -8,6 +8,8 @@
 -- Corona SDK has a really power storyboard engine,
 -----------------------------------------------------------------------------------------
 local storyboard = require( "storyboard" )
+soundMaster = require ("mainSoundMaster")
+soundMaster.initializeSoundMaster ()
 --because I am lazy?
 levelSelector = 1
 storyboard.purgeOnSceneChange = true

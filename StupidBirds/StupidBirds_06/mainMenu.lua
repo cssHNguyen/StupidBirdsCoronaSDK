@@ -10,8 +10,9 @@ function scene:createScene( event )
     --Just remember to insert into it, ex: group:insert(obj)
  	local group = self.view
  	local mainMenuBackground = display.newImage ("Assets/GUI/mainMenuBG.jpg", 240, 160)
- 	local mainTitle = display.newText ("Stupid Birds!", 240, 80, font, 28)
+ 	local mainTitle = display.newText ("Plagerizing Birds!", 240, 80, font, 28)
  	local playButton = display.newImage ("Assets/GUI/playButton.png", 240, 160)
+ 	soundMaster.playBGM ("ETC")
  	-----------------------------------------------------------------------------------------
  	group:insert (mainMenuBackground)
  	group:insert (playButton)
@@ -20,10 +21,11 @@ function scene:createScene( event )
  	self.onUpdate = function (event)
  		playButton:setFillColor (math.random(255)/255,math.random(255)/255,math.random(255)/255)
  	end
- 	Runtime:addEventListener ("enterFrame", self.onUpdate) --gets called once every frame
+ 	Runtime:addEventListener ("enterFrame", self.onUpdate)
  	-----------------------------------------------------------------------------------------
  	local function playButtonListener (event)
  		if (event.phase == "began") then
+ 			soundMaster.playButtonSound ("Ding")
  			storyboard.gotoScene ("mainSelectLevel")
  		end
  		return true
@@ -32,7 +34,6 @@ function scene:createScene( event )
  	-----------------------------------------------------------------------------------------
 end
 -----------------------------------------------------------------------------------------
--- clean up listeners,
 function scene:exitScene( event )
 	Runtime:removeEventListener ("enterFrame", self.onUpdate)
 end

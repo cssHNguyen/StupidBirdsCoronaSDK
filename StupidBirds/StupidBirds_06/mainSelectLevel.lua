@@ -10,34 +10,43 @@ function scene:createScene( event )
     --Just remember to insert into it, ex: group:insert(obj)
  	local group = self.view
  	local mainMenuBackground = display.newImage ("Assets/GUI/mainMenuBG.jpg", 240, 160)
- 	local mainTitle = display.newText ("Stupid Birds!", 240, 80, font, 28)
- 	local playButton = display.newImage ("Assets/GUI/playButton.png", 240, 160)
- 	-----------------------------------------------------------------------------------------
+ 	soundMaster.stopCurrentBGM()
  	group:insert (mainMenuBackground)
- 	group:insert (playButton)
- 	group:insert (mainTitle)
  	-----------------------------------------------------------------------------------------
- 	self.onUpdate = function (event)
- 		playButton:setFillColor (math.random(255)/255,math.random(255)/255,math.random(255)/255)
- 	end
- 	Runtime:addEventListener ("enterFrame", self.onUpdate) --gets called once every frame
+ 	local lvlPrompt = display.newText ("Pick a Level", 240, 40, font, 32)
+ 	local lvl01 = display.newText ("Level 1", 240, 90, font, 28)
+ 	local lvl02 = display.newText ("Level 2", 240, 140, font, 28)
+ 	local lvl03 = display.newText ("Level 3", 240, 190, font, 28)
+ 	lvl01.ID = 1
+ 	lvl02.ID = 2
+ 	lvl03.ID = 3
+ 	group:insert (lvlPrompt)
+ 	group:insert (lvl01)
+ 	group:insert (lvl02)
+ 	group:insert (lvl03)
  	-----------------------------------------------------------------------------------------
- 	local function playButtonListener (event)
+ 	local function lvlListener (event)
  		if (event.phase == "began") then
- 			storyboard.gotoScene ("mainSelectLevel")
+ 			if (event.target.ID == 1) then
+ 				levelSelector = 1
+ 				storyboard.gotoScene ("loadGame")
+ 			elseif (event.target.ID == 2) then
+ 				levelSelector = 2
+ 				storyboard.gotoScene ("loadGame")
+ 			elseif (event.target.ID == 3) then
+ 				levelSelector = 3
+ 				storyboard.gotoScene ("loadGame")
+ 			end
+ 			soundMaster.playBGM ("Main")
  		end
- 		return true
  	end
- 	playButton:addEventListener ("touch", playButtonListener)
+ 	lvl01:addEventListener ("touch", lvlListener)
+ 	lvl02:addEventListener ("touch", lvlListener)
+ 	lvl03:addEventListener ("touch", lvlListener)
  	-----------------------------------------------------------------------------------------
 end
 -----------------------------------------------------------------------------------------
--- clean up listeners,
-function scene:exitScene( event )
-	Runtime:removeEventListener ("enterFrame", self.onUpdate)
-end
------------------------------------------------------------------------------------------
+-- "createScene" event is dispatched if scene's view does not exist
 scene:addEventListener( "createScene", scene )
-scene:addEventListener( "exitScene", scene )
 return scene
 -----------------------------------------------------------------------------------------
